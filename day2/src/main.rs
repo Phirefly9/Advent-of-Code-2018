@@ -5,13 +5,17 @@ use itertools::Itertools;
 
 fn main() {
     let contents = fs::read_to_string("input.txt").unwrap();
+    
     let chars_map: Vec<Vec<(char, i32)>> = contents.lines()
-                        .map(|c| c.chars().sorted().into_iter()
-                                  .map(|c| (c, 1))
-                                  .coalesce(|(c, n), (d, m)|
-                                  if c == d { Ok((c, n + m)) } else { Err(((c, n), (d, m))) })
-                                  .collect())
-                        .collect();
+                                                    // adbdadcd = [(a, 2), (b, 1), (c, 1), (d, 4)]
+                                                    .map(|c| c.chars().sorted().into_iter()
+                                                            .map(|c| (c, 1))
+                                                            .coalesce(|(c, n), (d, m)|
+                                                            if c == d { Ok((c, n + m)) } else { Err(((c, n), (d, m))) })
+                                                            .collect())
+                                                    .collect();
+
+    
     let mut two_count = 0;
     let mut three_count = 0;
     for xx in chars_map {
@@ -48,7 +52,7 @@ fn main() {
             }
         }
         if diff_count == 1 {
-            println!("part2 key: {}", common);
+            println!("part2 {}", diff_count, common);
             return
         }
     }
